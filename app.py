@@ -7,11 +7,11 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 def homepage():
   return render_template('index.html')
 
-@app.route('/add/')
+@app.route('/add.html/')
 def add():
   return render_template('add.html')
 
-@app.route('/edit/')
+@app.route('/edit.html/')
 def delete():
   return render_template('edit.html')
 
