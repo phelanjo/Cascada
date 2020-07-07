@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
@@ -28,9 +28,35 @@ class Waterfall(db.Model):
   latitude = db.Column(db.String(200))
   longitude = db.Column(db.String(200))
 
+  def __init__(self, name, height, latitude, longitude):
+    self.name = name
+    self.height = height
+    self.latitude = latitude
+    self.longitude = longitude
+
 db.create_all()
 
-# @app.route('/')
+@app.route('/fetch_all/', methods=['GET'])
+def fetch_all():
+  waterfalls = Waterfall.query.all()
+  list_of_waterfalls = []
+
+  for waterfall in waterfalls:
+    list_of_waterfalls.append({
+      'name': waterfall.name,
+      'height': waterfall.height,
+      'latitude': waterfall.latitude,
+      'longitude': waterfall.longitude
+    })
+  return jsonify(list_of_waterfalls)
+  
+
+@app.after_request
+def add_headers(response):
+  response.headers.add('Access-Control-Allow-Origin', '*')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  return response
+  
 
 # @app.route('/add')
 
