@@ -52,14 +52,12 @@ def fetch_all():
   
 @app.route('/add_waterfall/', methods=['POST'])
 def add_waterfall():
-  name = request.form['name']
-  height = request.form['height']
-  latitude = request.form['latitude']
-  longitude = request.form['longitude']
+  response = request.get_json()
+  name, height, latitude, longitude = response['name'], response['height'], response['latitude'], response['longitude']
   waterfall = Waterfall(name, height, latitude, longitude)
   db.session.add(waterfall)
   db.session.commit()
-  return "<p>Waterfall successfully added</p>"
+  return jsonify(response)
 
 
 @app.after_request
