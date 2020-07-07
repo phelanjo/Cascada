@@ -57,15 +57,20 @@ def add_waterfall():
   db.session.commit()
   return jsonify(response)
 
+@app.route('/delete_waterfall/', methods=['DELETE'])
+def delete_waterfall():
+  response = request.get_json()
+  name = response['name']
+  Waterfall.query.filter_by(name=name).delete()
+  db.session.commit()
+  return jsonify(response)
 
 @app.after_request
 def add_headers(response):
   response.headers.add('Access-Control-Allow-Origin', '*')
   response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'GET, POST, UPDATE, DELETE')
   return response
-  
-
-# @app.route('/edit')
 
 if __name__ == "__main__":
   app.run()
