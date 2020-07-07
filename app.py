@@ -47,6 +47,12 @@ def fetch_all():
       'longitude': waterfall.longitude
     })
   return jsonify(list_of_waterfalls)
+
+@app.route('/fetch_waterfall_by_name/', methods=['GET'])
+def fetch_waterfall_id_by_name():
+  name = request.args['name']
+  waterfall_id = Waterfall.query.filter_by(name=name).first().id
+  return jsonify(waterfall_id)
   
 @app.route('/add_waterfall/', methods=['POST'])
 def add_waterfall():
