@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
@@ -50,6 +50,17 @@ def fetch_all():
     })
   return jsonify(list_of_waterfalls)
   
+@app.route('/add_waterfall/', methods=['POST'])
+def add_waterfall():
+  name = request.form['name']
+  height = request.form['height']
+  latitude = request.form['latitude']
+  longitude = request.form['longitude']
+  waterfall = Waterfall(name, height, latitude, longitude)
+  db.session.add(waterfall)
+  db.session.commit()
+  return "<p>Waterfall successfully added</p>"
+
 
 @app.after_request
 def add_headers(response):
@@ -57,8 +68,6 @@ def add_headers(response):
   response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')
   return response
   
-
-# @app.route('/add')
 
 # @app.route('/edit')
 
