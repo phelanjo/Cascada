@@ -71,6 +71,20 @@ def delete_waterfall():
   db.session.commit()
   return jsonify(response)
 
+@app.route('/edit_waterfall/', methods=['UPDATE'])
+def edit_waterfall():
+  response = request.get_json()
+  waterfall_id, name, height, latitude, longitude = response['waterfall_id'], response['name'], response['height'], response['latitude'], response['longitude']
+  waterfall = db.session.query(Waterfall).get(waterfall_id)
+
+  waterfall.name = name
+  waterfall.height = height
+  waterfall.latitude = latitude
+  waterfall.longitude = longitude
+  
+  db.session.commit()
+  return jsonify(response)
+
 @app.after_request
 def add_headers(response):
   response.headers.add('Access-Control-Allow-Origin', '*')
